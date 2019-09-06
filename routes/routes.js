@@ -4,6 +4,19 @@ var watch = require('node-watch');
 var value="0";
 watch('C:\\batch\\pass.txt', { recursive: true }, function(evt, name) {
     fs.readFile("C:\\batch\\pass.txt", "utf-8", (err, data) => {
+       // console.log("here.....",data.length);
+        if(data.length===0){
+           // console.log("coming if")
+            value="1000000000000000";
+        }else{
+           // console.log("not  if")
+            value=data;
+        }
+       
+      });
+  });
+  watch('C:\\batch\\gross.txt', { recursive: true }, function(evt, name) {
+    fs.readFile("C:\\batch\\gross.txt", "utf-8", (err, data) => {
         value=data;
       });
   });
@@ -15,12 +28,19 @@ var appRouter = function(app){
    });
    app.get("/getweight",function(req,res){
        fs.readFile("C:\\batch\\pass.txt", "utf-8", (err, data) => {
-        console.log(data);
-        res.send(data);
+        console.log(data + 'HIII');
+        res.send(data); 
       });
    });
+   app.get("/getgrossweight",function(req,res){
+    fs.readFile("C:\\batch\\gross.txt", "utf-8", (err, data) => {
+     console.log(data);
+     res.send(data);
+   });
+});
    app.get("/setCookie",function(req,res){
-      res.send(value);  
+      res.send(value);
+        
    });
     app.get("/resetCookie",function(req,res){
         value="0";
